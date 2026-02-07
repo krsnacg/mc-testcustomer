@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Sonar') {
             steps {
-                withSonarQubeEnv(installationName: 'SonarQubeServer') { // Replace with your SonarQube server name configured in Jenkins
+                withSonarQubeEnv(installationName: 'My SonarQube Server') { // Replace with your SonarQube server name configured in Jenkins
                     sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=mc-testcustomer -Dsonar.projectName='mc-testcustomer'"  // Example SonarQube analysis command, replace with your actual command
                 }
             }
