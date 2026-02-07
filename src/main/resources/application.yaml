@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: mc-testcustomer
+
+
+server:
+  port: 8060
+
+logging:
+  level: 
+    org:
+      springframework:
+        web: DEBUG
+    '[reactor.netty]': DEBUG
+  file:
+    name: ../.log/${spring.application.name}/${spring.application.name}.log
+    
