@@ -53,9 +53,17 @@ pipeline {
                         passwordVariable: 'DOCKER_PWD'
                     )
                 ]) {
-                    sh "echo \$DOCKER_PWD | docker login -u \$DOCKER_USR --password-stdin" // Log in to Docker registry
+                    sh """
+                      echo "$DOCKER_PWD" | docker login -u "$DOCKER_USR" --password-stdin
+                    """ // Log in to Docker registry
                     sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}" // Push the image to the registry
                 }
+            }
+        }
+
+        post {
+            always {
+                sh "docker logout ${REGISTRY}"
             }
         }
     }
