@@ -6,6 +6,13 @@ pipeline {
         
     }
 
+    environment {
+        REGISTRY_CREDS = credentials('docker-credentials') // Replace with your Jenkins credential ID for Docker credentials
+        IMAGE_NAME = 'mc-testcustomer' // Define your image name here
+        IMAGE_TAG = '${BUILD_NUMBER}' // Define your image tag here
+        REGISTRY = 'docker.io'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -34,7 +41,22 @@ pipeline {
         stage('Image Build') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build  -t mc-testcustomer:latest .' // Example Docker build command
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ." // Example Docker build command
+                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}" // Tag the image for your Docker registry
+            }
+        }
+        stage('Push Image') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'docker-credentials', 
+                        usernameVariable: 'DOCKER_USR', 
+                        passwordVariable: 'DOCKER_PWD'
+                    )
+                ]) {
+                    sh "echo $DOCKER_PWD | docker login -u $DOCKER_USR --password-stdin" // Log in to Docker registry
+                    sh "docker push your-docker-repo/${IMAGE_NAME}:${IMAGE_TAG}" // Push the image to the registry
+                }
             }
         }
     }
