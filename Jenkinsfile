@@ -61,10 +61,12 @@ pipeline {
             }
         }
 
-        post {
-            always {
-                sh "docker logout ${REGISTRY}"
-            }
+        
+    }
+
+    post {
+        always {
+            sh "docker logout ${REGISTRY}"
         }
     }
 }
