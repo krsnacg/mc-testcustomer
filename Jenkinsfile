@@ -9,7 +9,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'mc-testcustomer' // Define your image name here
         IMAGE_TAG = '1.${BUILD_NUMBER}' // Define your image tag here
-        REGISTRY = 'docker.io'
+        REGISTRY = credential('docker-registry') // Define your Docker registry credential ID here
     }
 
     stages {
