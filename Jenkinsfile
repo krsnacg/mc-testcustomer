@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ." // Example Docker build command
-                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}" // Tag the image for your Docker registry
+                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} \$REGISTRY/${IMAGE_NAME}:${IMAGE_TAG}" // Tag the image for your Docker registry
             }
         }
         stage('Push Image') {
@@ -54,7 +54,7 @@ pipeline {
                     )
                 ]) {
                     sh "echo \$DOCKER_PWD | docker login -u \$DOCKER_USR --password-stdin"// Log in to Docker registry
-                    sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}" // Push the image to the registry
+                    sh "docker push \$REGISTRY/${IMAGE_NAME}:${IMAGE_TAG}" // Push the image to the registry
                 }
             }
         }
@@ -64,7 +64,7 @@ pipeline {
 
     post {
         always {
-            sh "docker logout ${REGISTRY}"
+            sh "docker logout \$REGISTRY"
         }
     }
 }
