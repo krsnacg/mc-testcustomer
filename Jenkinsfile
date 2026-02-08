@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'mc-testcustomer' // Define your image name here
-        IMAGE_TAG = '${BUILD_NUMBER}' // Define your image tag here
+        IMAGE_TAG = '1.${BUILD_NUMBER}' // Define your image tag here
         REGISTRY = 'docker.io'
     }
 
