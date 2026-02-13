@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mc-testcust-deployment
+  labels:
+    app: mc-testcust
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mc-testcust
+  template:
+    metadata:
+      labels:
+        app: mc-testcust
+    spec:
+      containers:
+      - name: mc-testcust
+        image: registry/mc-testcustomer:latest
+        ports:
+        - containerPort: 9050
+      

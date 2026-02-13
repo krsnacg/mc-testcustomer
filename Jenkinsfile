@@ -58,6 +58,20 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+
+                // Update the Kubernetes deployment YAML with the new image name and tag
+                sh "sed --i 's|registry/mc-testcustomer:latest|\$REGISTRY/${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml" 
+
+                // This assumes kubectl is installed in the Jenkins instance and a 
+                // kubeconfig credential is set up in Jenkins credentials with ID 'kubeconfig'
+                // The kubeconfig file should be located at /etc/rancher/k3s/k3s.yaml if using k3s
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh "kubectl apply -f k8s/deployment.yaml" // Apply the Kubernetes deployment
+                }
+            }
+        }
 
         
     }
