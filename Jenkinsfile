@@ -63,7 +63,7 @@ pipeline {
                 script {
                     def imageName = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
                     // Update the Kubernetes deployment YAML with the new image name and tag
-                    sh "sed -i 's|registry/mc-testcustomer:latest|\$imageName|g' k8s/deployment.yaml" 
+                    sh "sed -i 's|registry/mc-testcustomer:latest|${imageName}|g' k8s/deployment.yaml" 
 
                     // This assumes kubectl is installed in the Jenkins instance and a 
                     // kubeconfig credential is set up in Jenkins credentials with ID 'kubeconfig'
